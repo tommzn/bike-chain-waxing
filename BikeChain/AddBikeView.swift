@@ -40,6 +40,8 @@ struct AddBikeView: View {
                             }
                         }
                         .buttonStyle(.borderedProminent)
+                        .tint(.blue)
+                        .foregroundStyle(.white)
                     }
                     .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -72,6 +74,8 @@ struct AddBikeView: View {
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .controlSize(.small)
+                                .tint(.blue)
+                                .foregroundStyle(.white)
                             }
                         }
                         .padding(.vertical, 4)

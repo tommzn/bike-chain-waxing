@@ -38,10 +38,11 @@ struct BikeRowView: View {
                 Spacer()
                 Button(action: onAddWaxEntry) {
                     Label("Log Wax", systemImage: "checkmark.seal")
+                        .foregroundStyle(.white)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
-                .tint(isOverdue ? .red : .accentColor)
+                .tint(isOverdue ? .red : .blue)
             }
 
             // Progress bar
