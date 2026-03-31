@@ -29,6 +29,13 @@ struct ContentView: View {
                 }
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        deleteBike(bike)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
             .listStyle(.plain)
             .refreshable {
@@ -73,6 +80,10 @@ struct ContentView: View {
                 store = BikeChainStore(strava: stravaService, modelContext: modelContext)
             }
         }
+    }
+
+    private func deleteBike(_ bike: Bike) {
+        modelContext.delete(bike)
     }
 
     private func addWaxEntry(to bike: Bike) {
