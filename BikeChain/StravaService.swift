@@ -103,7 +103,7 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
             .init(name: "redirect_uri",  value: redirectUri),
             .init(name: "response_type", value: "code"),
             .init(name: "approval_prompt", value: "auto"),
-            .init(name: "scope",         value: "read,activity:read_all"),
+            .init(name: "scope",         value: "read,profile:read_all,activity:read_all"),
         ]
 
         let authURL = components.url!
@@ -179,10 +179,39 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
     // MARK: - Public API
 
     /// Returns all bikes registered for the authenticated athlete.
+    /// Primary source: GET /athlete (requires profile:read_all scope).
+    /// Fallback: collects gear IDs from recent activities and calls GET /gear/{id} for each.
     func fetchBikes() async throws -> [StravaBike] {
         try await ensureValidToken()
         let athlete: StravaAthlete = try await get("athlete")
-        return athlete.bikes
+
+        if !athlete.bikes.isEmpty {
+            print("✅ Strava: found \(athlete.bikes.count) bike(s) in athlete profile")
+            return athlete.bikes
+        }
+
+        print("⚠️ Strava: no bikes in athlete profile, falling back to gear lookup from activities")
+        return try await fetchBikesFromActivities()
+    }
+
+    /// Fetches up to 200 recent activities, collects unique gear IDs, then resolves each via GET /gear/{id}.
+    private func fetchBikesFromActivities() async throws -> [StravaBike] {
+        let activities: [StravaActivity] = try await get(
+            "athlete/activities",
+            queryItems: [.init(name: "per_page", value: "200")]
+        )
+
+        let gearIds = Set(activities.compactMap(\.gearId))
+        print("⚠️ Strava: found \(gearIds.count) unique gear ID(s) in recent activities: \(gearIds)")
+
+        var bikes: [StravaBike] = []
+        for gearId in gearIds {
+            if let gear: StravaGear = try? await get("gear/\(gearId)") {
+                bikes.append(gear.asStravaBike)
+            }
+        }
+        print("⚠️ Strava: resolved \(bikes.count) bike(s) via gear endpoint")
+        return bikes
     }
 
     /// Returns all rides for the given Strava bike ID within the specified date range.

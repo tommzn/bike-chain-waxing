@@ -62,6 +62,26 @@ struct StravaBike: Decodable, Identifiable {
     }
 }
 
+// MARK: - Gear
+
+/// Response from GET /gear/{id} — used as fallback when athlete.bikes is empty.
+struct StravaGear: Decodable {
+    let id: String
+    let name: String
+    let distance: Double
+
+    enum CodingKeys: String, CodingKey { case id, name, distance }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id       = try c.decode(String.self, forKey: .id)
+        name     = (try? c.decode(String.self, forKey: .name)) ?? "Unnamed Bike"
+        distance = (try? c.decode(Double.self, forKey: .distance)) ?? 0
+    }
+
+    var asStravaBike: StravaBike { StravaBike(id: id, name: name, distance: distance) }
+}
+
 // MARK: - Activity
 
 struct StravaActivity: Decodable, Identifiable {
