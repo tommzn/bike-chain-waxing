@@ -61,16 +61,16 @@ struct BikeRowView: View {
             HStack {
                 Text(String(format: "%.0f / %.0f km", riddenKm, waxDurationKm))
                     .font(.caption)
-                    .foregroundStyle(isOverdue ? .red : .secondary)
+                    .foregroundStyle(isOverdue ? .red : .primary)
                 Spacer()
                 if let lastWaxDate {
                     Text("Last waxed \(lastWaxDate.formatted(date: .abbreviated, time: .omitted))")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 } else {
                     Text("Never waxed")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary)
                 }
             }
         }

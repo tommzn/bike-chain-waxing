@@ -59,7 +59,7 @@ struct AddBikeView: View {
                                     .foregroundStyle(isImported ? .secondary : .primary)
                                 Text(String(format: "%.0f km total", bike.distanceKm))
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(isImported ? .secondary : .primary)
                             }
                             Spacer()
                             if isImported {
