@@ -102,4 +102,4 @@ All 42 tests run without requiring a Strava account or network connection.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE) for details.
