@@ -32,7 +32,7 @@ struct AppSettingsView: View {
                         Text("Wax Interval")
                         Spacer()
                         Text("\(Int(waxDuration)) km")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                             .monospacedDigit()
                     }
                     Slider(value: $waxDuration, in: 0...800, step: 1)
@@ -42,11 +42,11 @@ struct AppSettingsView: View {
                     HStack {
                         Text("0 km")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                         Spacer()
                         Text("800 km")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.primary)
                     }
                 }
                 .padding(.vertical, 4)
