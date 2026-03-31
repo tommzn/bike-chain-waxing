@@ -16,6 +16,7 @@ struct ContentView: View {
 
     @State private var store: BikeChainStore?
     @State private var showAddBike = false
+    @State private var bikeToWax: Bike?
 
     private var waxDurationKm: Double {
         settings.first?.waxDurationKm ?? 200.0
@@ -25,7 +26,11 @@ struct ContentView: View {
         NavigationStack {
             List(bikes) { bike in
                 BikeRowView(bike: bike, waxDurationKm: waxDurationKm) {
-                    addWaxEntry(to: bike)
+                    if bike.lastWaxEntry != nil {
+                        bikeToWax = bike
+                    } else {
+                        addWaxEntry(to: bike)
+                    }
                 }
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
@@ -68,6 +73,21 @@ struct ContentView: View {
                         systemImage: "bicycle",
                         description: Text("Tap + to import bikes from Strava.")
                     )
+                }
+            }
+            .confirmationDialog(
+                "Log Wax",
+                isPresented: Binding(get: { bikeToWax != nil }, set: { if !$0 { bikeToWax = nil } }),
+                titleVisibility: .visible
+            ) {
+                Button("Log Wax") {
+                    if let bike = bikeToWax { addWaxEntry(to: bike) }
+                    bikeToWax = nil
+                }
+                Button("Cancel", role: .cancel) { bikeToWax = nil }
+            } message: {
+                if let bike = bikeToWax, let date = bike.lastWaxEntry?.date {
+                    Text("This will replace the last wax entry from \(date.formatted(date: .long, time: .omitted)).")
                 }
             }
             .sheet(isPresented: $showAddBike) {
