@@ -38,7 +38,7 @@ struct BikeRowView: View {
                 Spacer()
                 Button(action: onAddWaxEntry) {
                     Label("Log Wax", systemImage: "checkmark.seal")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(isOverdue ? .white : .black)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
