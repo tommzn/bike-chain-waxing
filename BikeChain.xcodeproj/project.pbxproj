@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		BC00011A2F7AAAA5009E4E0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6FF2B3252F7AAAA5009E4E0A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6FF2B32C2F7AAAA5009E4E0A;
+			remoteInfo = BikeChain;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		6FF2B32D2F7AAAA5009E4E0A /* BikeChain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikeChain.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC00009A2F7AAAA5009E4E0A /* BikeChainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BikeChainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = BikeChain;
 			sourceTree = "<group>";
 		};
+		BC00005A2F7AAAA5009E4E0A /* BikeChainTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BikeChainTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		6FF2B32A2F7AAAA5009E4E0A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC00003A2F7AAAA5009E4E0A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				6FF2B32F2F7AAAA5009E4E0A /* BikeChain */,
+				BC00005A2F7AAAA5009E4E0A /* BikeChainTests */,
 				6FF2B32E2F7AAAA5009E4E0A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				6FF2B32D2F7AAAA5009E4E0A /* BikeChain.app */,
+				BC00009A2F7AAAA5009E4E0A /* BikeChainTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 			productReference = 6FF2B32D2F7AAAA5009E4E0A /* BikeChain.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BC00001A2F7AAAA5009E4E0A /* BikeChainTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC00008A2F7AAAA5009E4E0A /* Build configuration list for PBXNativeTarget "BikeChainTests" */;
+			buildPhases = (
+				BC00002A2F7AAAA5009E4E0A /* Sources */,
+				BC00003A2F7AAAA5009E4E0A /* Frameworks */,
+				BC00004A2F7AAAA5009E4E0A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BC00010A2F7AAAA5009E4E0A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				BC00005A2F7AAAA5009E4E0A /* BikeChainTests */,
+			);
+			name = BikeChainTests;
+			packageProductDependencies = (
+			);
+			productName = BikeChainTests;
+			productReference = BC00009A2F7AAAA5009E4E0A /* BikeChainTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +143,10 @@
 				TargetAttributes = {
 					6FF2B32C2F7AAAA5009E4E0A = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					BC00001A2F7AAAA5009E4E0A = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 6FF2B32C2F7AAAA5009E4E0A;
 					};
 				};
 			};
@@ -113,12 +165,20 @@
 			projectRoot = "";
 			targets = (
 				6FF2B32C2F7AAAA5009E4E0A /* BikeChain */,
+				BC00001A2F7AAAA5009E4E0A /* BikeChainTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6FF2B32B2F7AAAA5009E4E0A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BC00004A2F7AAAA5009E4E0A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BC00002A2F7AAAA5009E4E0A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BC00010A2F7AAAA5009E4E0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6FF2B32C2F7AAAA5009E4E0A /* BikeChain */;
+			targetProxy = BC00011A2F7AAAA5009E4E0A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		6FF2B33C2F7AAAA8009E4E0A /* Debug */ = {
@@ -327,6 +402,58 @@
 			};
 			name = Release;
 		};
+		BC00006A2F7AAAA5009E4E0A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V64YS8G4U4;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tommzn.BikeChainTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BikeChain.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BikeChain";
+			};
+			name = Debug;
+		};
+		BC00007A2F7AAAA5009E4E0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V64YS8G4U4;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tommzn.BikeChainTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BikeChain.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BikeChain";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -344,6 +471,15 @@
 			buildConfigurations = (
 				6FF2B33C2F7AAAA8009E4E0A /* Debug */,
 				6FF2B33D2F7AAAA8009E4E0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC00008A2F7AAAA5009E4E0A /* Build configuration list for PBXNativeTarget "BikeChainTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC00006A2F7AAAA5009E4E0A /* Debug */,
+				BC00007A2F7AAAA5009E4E0A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

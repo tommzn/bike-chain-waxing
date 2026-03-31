@@ -13,8 +13,12 @@ struct BikeChainApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
+            AppSettings.self,
+            Bike.self,
+            Ride.self,
+            WaxEntry.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .none)
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
@@ -23,9 +27,12 @@ struct BikeChainApp: App {
         }
     }()
 
+    @StateObject private var stravaService = StravaService()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.stravaService, stravaService)
         }
         .modelContainer(sharedModelContainer)
     }

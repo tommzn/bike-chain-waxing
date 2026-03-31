@@ -2,6 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>de.tommzn.bikechain</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>bikechain</string>
+			</array>
+		</dict>
+	</array>
+	<key>StravaClientId</key>
+	<string>$(STRAVA_CLIENT_ID)</string>
+	<key>StravaClientSecret</key>
+	<string>$(STRAVA_CLIENT_SECRET)</string>
+	<key>StravaAthleteId</key>
+	<string>$(STRAVA_ATHLETE_ID)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
