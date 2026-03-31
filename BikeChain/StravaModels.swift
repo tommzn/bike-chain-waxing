@@ -24,7 +24,16 @@ struct StravaTokenResponse: Decodable {
 // MARK: - Athlete
 
 struct StravaAthlete: Decodable {
+    // Default to empty array — Strava may omit or null-out this field
+    // for accounts with no bikes or restricted scopes.
     let bikes: [StravaBike]
+
+    enum CodingKeys: String, CodingKey { case bikes }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        bikes = (try? container.decode([StravaBike].self, forKey: .bikes)) ?? []
+    }
 }
 
 // MARK: - Bike
@@ -36,6 +45,21 @@ struct StravaBike: Decodable, Identifiable {
     let distance: Double
 
     var distanceKm: Double { distance / 1000 }
+
+    enum CodingKeys: String, CodingKey { case id, name, distance }
+
+    init(id: String, name: String, distance: Double) {
+        self.id = id
+        self.name = name
+        self.distance = distance
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id       = try c.decode(String.self, forKey: .id)
+        name     = (try? c.decode(String.self, forKey: .name)) ?? "Unnamed Bike"
+        distance = (try? c.decode(Double.self, forKey: .distance)) ?? 0
+    }
 }
 
 // MARK: - Activity
@@ -43,7 +67,8 @@ struct StravaBike: Decodable, Identifiable {
 struct StravaActivity: Decodable, Identifiable {
     let id: Int
     let name: String
-    let type: String
+    /// `type` is deprecated in newer Strava API versions; fall back to `sport_type`.
+    let activityType: String
     let startDate: Date
     /// Distance in meters.
     let distance: Double
@@ -55,8 +80,30 @@ struct StravaActivity: Decodable, Identifiable {
         case id
         case name
         case type
+        case sportType = "sport_type"
         case startDate = "start_date"
         case distance
         case gearId    = "gear_id"
+    }
+
+    init(id: Int, name: String, type: String, startDate: Date = Date(), distance: Double, gearId: String? = nil) {
+        self.id = id
+        self.name = name
+        self.activityType = type
+        self.startDate = startDate
+        self.distance = distance
+        self.gearId = gearId
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id           = try c.decode(Int.self,    forKey: .id)
+        name         = try c.decode(String.self, forKey: .name)
+        activityType = (try? c.decode(String.self, forKey: .type))
+                    ?? (try? c.decode(String.self, forKey: .sportType))
+                    ?? "Ride"
+        startDate    = try c.decode(Date.self,   forKey: .startDate)
+        distance     = try c.decode(Double.self, forKey: .distance)
+        gearId       = try? c.decode(String.self, forKey: .gearId)
     }
 }

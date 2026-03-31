@@ -24,6 +24,9 @@ extension EnvironmentValues {
 #if DEBUG
 @MainActor
 final class MockStravaService: StravaAPIService {
+    var isAuthenticated: Bool = true
+    func authorize() async throws {}
+
     func fetchBikes() async throws -> [StravaBike] {
         return [
             StravaBike(id: "s1", name: "Canyon Gravel CF SL", distance: 4_320_000),

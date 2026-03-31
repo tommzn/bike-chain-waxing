@@ -26,6 +26,12 @@ final class MockStravaService: StravaAPIService {
 
     // MARK: StravaAPIService
 
+    var isAuthenticated: Bool = true
+
+    func authorize() async throws {
+        if let error = errorToThrow { throw error }
+    }
+
     func fetchBikes() async throws -> [StravaBike] {
         if let error = errorToThrow { throw error }
         return bikesToReturn

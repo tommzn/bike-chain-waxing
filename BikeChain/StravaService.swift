@@ -66,7 +66,24 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
-        d.dateDecodingStrategy = .iso8601
+        // Strava returns ISO 8601 dates both with and without fractional seconds
+        // e.g. "2024-03-15T10:30:00Z" and "2024-03-15T10:30:00.000000Z".
+        // The built-in .iso8601 strategy only handles the former, so we use a
+        // custom strategy that tries both.
+        let formatterFull = ISO8601DateFormatter()
+        formatterFull.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let formatterBasic = ISO8601DateFormatter()
+        formatterBasic.formatOptions = [.withInternetDateTime]
+        d.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let string = try container.decode(String.self)
+            if let date = formatterFull.date(from: string) { return date }
+            if let date = formatterBasic.date(from: string) { return date }
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Cannot parse date: \(string)"
+            )
+        }
         return d
     }()
 
@@ -80,7 +97,7 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
     // MARK: - OAuth
 
     /// Starts the Strava OAuth flow using an in-app browser session.
-    func authorize(presentationAnchor: ASPresentationAnchor) async throws {
+    func authorize() async throws {
         var components = URLComponents(string: "https://www.strava.com/oauth/authorize")!
         components.queryItems = [
             .init(name: "client_id",     value: clientId),
@@ -192,7 +209,7 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
                 ]
             )
 
-            let rides = activities.filter { $0.type == "Ride" && $0.gearId == bikeId }
+            let rides = activities.filter { $0.activityType == "Ride" && $0.gearId == bikeId }
             allRides.append(contentsOf: rides)
 
             if activities.count < perPage { break }
@@ -238,7 +255,15 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
             throw StravaError.httpError(http.statusCode)
         }
 
-        return try decoder.decode(T.self, from: data)
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            #if DEBUG
+            let raw = String(data: data, encoding: .utf8) ?? "<non-UTF8>"
+            print("⚠️ Strava decode error: \(error)\nRaw response: \(raw)")
+            #endif
+            throw error
+        }
     }
 
     // MARK: - Token persistence

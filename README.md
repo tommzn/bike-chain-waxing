@@ -38,7 +38,7 @@ cd BikeChain
 ### 2. Create a Strava API application
 
 1. Go to [strava.com/settings/api](https://www.strava.com/settings/api) and create a new application.
-2. Set the **Authorization Callback Domain** to `localhost`.
+2. Set the **Authorization Callback Domain** to `strava`.
 3. Note your **Client ID** and **Client Secret** from the application page.
 4. Find your **Athlete ID** — it appears in the URL when you view your own Strava profile:
    `https://www.strava.com/athletes/YOUR_ATHLETE_ID`

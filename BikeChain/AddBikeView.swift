@@ -21,8 +21,28 @@ struct AddBikeView: View {
         NavigationStack {
             Group {
                 if store.isLoading {
-                    ProgressView("Loading bikes from Strava…")
+                    ProgressView("Loading…")
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if !store.isAuthenticated {
+                    VStack(spacing: 16) {
+                        Image(systemName: "link.circle")
+                            .font(.system(size: 60))
+                            .foregroundStyle(.secondary)
+                        Text("Connect to Strava to import your bikes.")
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.secondary)
+                        Button("Connect to Strava") {
+                            Task {
+                                await store.authorize()
+                                if store.isAuthenticated {
+                                    await store.loadStravaBikes()
+                                }
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if store.availableStravaBikes.isEmpty {
                     ContentUnavailableView(
                         "No Bikes Found",
@@ -74,6 +94,7 @@ struct AddBikeView: View {
             )
         }
         .task {
+            guard store.isAuthenticated else { return }
             await store.loadStravaBikes()
         }
     }

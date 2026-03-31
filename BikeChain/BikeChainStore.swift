@@ -59,6 +59,22 @@ final class BikeChainStore: ObservableObject {
         self.modelContext = modelContext
     }
 
+    // MARK: - Authentication
+
+    var isAuthenticated: Bool { strava.isAuthenticated }
+
+    /// Starts the Strava OAuth flow. Sets `error` if the flow fails or is cancelled.
+    func authorize() async {
+        guard !isLoading else { return }
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            try await strava.authorize()
+        } catch {
+            self.error = error
+        }
+    }
+
     // MARK: - Bike listing & import
 
     /// Fetches all bikes from the authenticated Strava account.

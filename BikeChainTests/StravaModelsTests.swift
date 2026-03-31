@@ -14,7 +14,18 @@ struct StravaModelsTests {
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
-        d.dateDecodingStrategy = .iso8601
+        let formatterFull = ISO8601DateFormatter()
+        formatterFull.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let formatterBasic = ISO8601DateFormatter()
+        formatterBasic.formatOptions = [.withInternetDateTime]
+        d.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let string = try container.decode(String.self)
+            if let date = formatterFull.date(from: string) { return date }
+            if let date = formatterBasic.date(from: string) { return date }
+            throw DecodingError.dataCorruptedError(in: container,
+                debugDescription: "Cannot parse date: \(string)")
+        }
         return d
     }()
 
@@ -42,6 +53,16 @@ struct StravaModelsTests {
         #expect(bike.distanceKm == 42)
     }
 
+    @Test func bikeWithNullNameFallsBackToDefault() throws {
+        let json = """
+        {"id":"b1","name":null,"distance":0}
+        """.data(using: .utf8)!
+
+        let bike = try decoder.decode(StravaBike.self, from: json)
+
+        #expect(bike.name == "Unnamed Bike")
+    }
+
     // MARK: - StravaActivity
 
     @Test func decodeActivity() throws {
@@ -60,9 +81,25 @@ struct StravaModelsTests {
 
         #expect(activity.id == 9_876_543)
         #expect(activity.name == "Morning Ride")
-        #expect(activity.type == "Ride")
+        #expect(activity.activityType == "Ride")
         #expect(activity.distance == 52_000)
         #expect(activity.gearId == "b12345")
+    }
+
+    @Test func decodeActivityWithSportTypeOnly() throws {
+        let json = """
+        {
+          "id": 1,
+          "name": "Morning Ride",
+          "sport_type": "Ride",
+          "start_date": "2026-03-15T08:30:00Z",
+          "distance": 52000.0
+        }
+        """.data(using: .utf8)!
+
+        let activity = try decoder.decode(StravaActivity.self, from: json)
+
+        #expect(activity.activityType == "Ride")
     }
 
     @Test func decodeActivityWithNilGearId() throws {
@@ -111,10 +148,29 @@ struct StravaModelsTests {
 
         let activity = try decoder.decode(StravaActivity.self, from: json)
 
-        var components = Calendar(identifier: .gregorian).dateComponents(in: TimeZone(identifier: "UTC")!, from: activity.startDate)
+        let components = Calendar(identifier: .gregorian)
+            .dateComponents(in: TimeZone(identifier: "UTC")!, from: activity.startDate)
         #expect(components.year == 2026)
         #expect(components.month == 1)
         #expect(components.day == 1)
+    }
+
+    @Test func activityStartDateWithFractionalSeconds() throws {
+        let json = """
+        {
+          "id": 1,
+          "name": "Ride",
+          "type": "Ride",
+          "start_date": "2026-01-01T00:00:00.000000Z",
+          "distance": 0
+        }
+        """.data(using: .utf8)!
+
+        let activity = try decoder.decode(StravaActivity.self, from: json)
+
+        let components = Calendar(identifier: .gregorian)
+            .dateComponents(in: TimeZone(identifier: "UTC")!, from: activity.startDate)
+        #expect(components.year == 2026)
     }
 
     // MARK: - StravaTokenResponse
@@ -157,6 +213,16 @@ struct StravaModelsTests {
     @Test func decodeAthleteWithNoBikes() throws {
         let json = """
         {"bikes": []}
+        """.data(using: .utf8)!
+
+        let athlete = try decoder.decode(StravaAthlete.self, from: json)
+
+        #expect(athlete.bikes.isEmpty)
+    }
+
+    @Test func decodeAthleteWithMissingBikesKey() throws {
+        let json = """
+        {"id": 12345, "firstname": "Jane"}
         """.data(using: .utf8)!
 
         let athlete = try decoder.decode(StravaAthlete.self, from: json)
