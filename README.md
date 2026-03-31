@@ -40,8 +40,6 @@ cd BikeChain
 1. Go to [strava.com/settings/api](https://www.strava.com/settings/api) and create a new application.
 2. Set the **Authorization Callback Domain** to `strava`.
 3. Note your **Client ID** and **Client Secret** from the application page.
-4. Find your **Athlete ID** — it appears in the URL when you view your own Strava profile:
-   `https://www.strava.com/athletes/YOUR_ATHLETE_ID`
 
 ### 3. Configure credentials
 
@@ -56,7 +54,6 @@ Open `Config.xcconfig` and replace the placeholders:
 ```
 STRAVA_CLIENT_ID     = 12345
 STRAVA_CLIENT_SECRET = abc123def456...
-STRAVA_ATHLETE_ID    = 9876543
 ```
 
 > `Config.xcconfig` is listed in `.gitignore` and will never be committed to the repository.

@@ -41,7 +41,6 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
 
     // MARK: Configuration – loaded from Info.plist (values injected via Config.xcconfig)
 
-    private let athelteId    = Bundle.main.object(forInfoDictionaryKey: "StravaAthleteId")    as? String ?? ""
     private let clientId     = Bundle.main.object(forInfoDictionaryKey: "StravaClientId")     as? String ?? ""
     private let clientSecret = Bundle.main.object(forInfoDictionaryKey: "StravaClientSecret") as? String ?? ""
     private let redirectUri  = "bikechain://strava/callback"
