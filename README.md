@@ -18,8 +18,6 @@ BikeChain is an iOS app that helps cyclists track when their bike chains need wa
 |-----------|----------------------|----------|
 | ![Bike list showing wax status progress bars](docs/screenshots/bike_list.png) | ![Import bikes from Strava](docs/screenshots/add_bike_v2.png) | ![Settings screen with wax interval slider](docs/screenshots/settings_v2.png) |
 
-> Screenshots will appear here once the app is running on a device or simulator.
-
 ## Requirements
 
 - Xcode 16 or later
