@@ -93,6 +93,12 @@ struct ContentView: View {
             .sheet(isPresented: $showAddBike) {
                 if let store {
                     AddBikeView(store: store)
+                } else {
+                    ProgressView()
+                        .task {
+                            guard let stravaService else { return }
+                            store = BikeChainStore(strava: stravaService, modelContext: modelContext)
+                        }
                 }
             }
             .task {
