@@ -6,9 +6,10 @@ BikeChain is an iOS app that helps cyclists track when their bike chains need wa
 
 - **Bike list** — all your bikes in one view, each with a live wax-status progress bar
 - **Wax status** — shows kilometers ridden since last wax vs. your configured wax interval, color-coded green → red as the limit approaches
-- **Log wax** — tap the *Log Wax* button on any bike to record a new waxing event instantly
+- **Log wax** — tap the *Log Wax* button on any bike to record a new waxing event; asks for confirmation when overwriting an existing entry
 - **Strava sync** — pull down to refresh ridden kilometers from Strava for all bikes
 - **Import bikes** — add bikes directly from your Strava account via the + button
+- **Delete bikes** — swipe left on any bike to remove it from local storage
 - **Configurable interval** — set your preferred wax interval (0–800 km) in Settings
 
 ## Screenshots
@@ -74,7 +75,7 @@ BikeChain/
 ├── AddBikeView.swift           # Import bikes from Strava (sheet)
 ├── AppSettingsView.swift       # Wax interval settings (sheet)
 ├── Bike.swift                  # SwiftData models: Bike, Ride, WaxEntry
-├── Settings.swift              # SwiftData model: AppSettings
+├── AppSettings.swift           # SwiftData model: AppSettings
 ├── BikeChainStore.swift        # Business logic & Strava orchestration
 ├── StravaService.swift         # Strava OAuth + REST API client
 ├── StravaServiceProtocol.swift # StravaAPIService protocol
