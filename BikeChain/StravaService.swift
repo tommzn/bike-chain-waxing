@@ -248,7 +248,24 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 
+        #if DEBUG
+        let method = req.httpMethod ?? "GET"
+        let url = req.url?.absoluteString ?? "?"
+        print("🌐 Strava → \(method) \(url)")
+        if let body = req.httpBody, let bodyStr = String(data: body, encoding: .utf8) {
+            print("   body: \(bodyStr)")
+        }
+        #endif
+
         let (data, response) = try await URLSession.shared.data(for: req)
+
+        #if DEBUG
+        if let http = response as? HTTPURLResponse {
+            print("   ← HTTP \(http.statusCode)")
+        }
+        let raw = String(data: data, encoding: .utf8) ?? "<non-UTF8>"
+        print("   body: \(raw)")
+        #endif
 
         if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
             throw StravaError.httpError(http.statusCode)
@@ -257,10 +274,7 @@ final class StravaService: NSObject, ObservableObject, StravaAPIService {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
-            #if DEBUG
-            let raw = String(data: data, encoding: .utf8) ?? "<non-UTF8>"
-            print("⚠️ Strava decode error: \(error)\nRaw response: \(raw)")
-            #endif
+            print("⚠️ Strava decode error: \(error)")
             throw error
         }
     }
