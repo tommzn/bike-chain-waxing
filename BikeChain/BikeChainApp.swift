@@ -18,7 +18,7 @@ struct BikeChainApp: App {
             Ride.self,
             WaxEntry.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .none)
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .private("iCloud.de.tommzn.BikeChain"))
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])

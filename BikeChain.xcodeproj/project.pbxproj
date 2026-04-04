@@ -145,6 +145,11 @@
 				TargetAttributes = {
 					6FF2B32C2F7AAAA5009E4E0A = {
 						CreatedOnToolsVersion = 26.3;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					BC00001A2F7AAAA5009E4E0A = {
 						CreatedOnToolsVersion = 26.3;
