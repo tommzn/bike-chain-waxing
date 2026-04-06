@@ -160,8 +160,10 @@ private func makePreviewContainer() -> ModelContainer {
     return container
 }
 
+#if DEBUG
 #Preview {
     ContentView()
         .modelContainer(makePreviewContainer())
         .environment(\.stravaService, MockStravaService())
 }
+#endif

@@ -113,9 +113,11 @@ private func makeAddBikePreviewContainer() -> ModelContainer {
     return container
 }
 
+#if DEBUG
 #Preview {
     let container = makeAddBikePreviewContainer()
     let store = BikeChainStore(strava: MockStravaService(), modelContext: container.mainContext)
     AddBikeView(store: store)
         .modelContainer(container)
 }
+#endif
