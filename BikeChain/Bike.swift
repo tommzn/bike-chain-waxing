@@ -14,7 +14,7 @@ final class Bike {
     var name: String = ""
 
     @Relationship(deleteRule: .cascade, inverse: \Ride.bike)
-    var rides: [Ride] = []
+    var rides: [Ride]?
 
     @Relationship(deleteRule: .cascade, inverse: \WaxEntry.bike)
     var lastWaxEntry: WaxEntry?

@@ -175,8 +175,8 @@ struct BikeChainStoreTests {
 
         let ride1 = Ride(stravaActivityId: 1, date: Date(timeIntervalSinceNow: -500), distanceKm: 80)
         let ride2 = Ride(stravaActivityId: 2, date: Date(timeIntervalSinceNow: -200), distanceKm: 60)
-        context.insert(ride1); bike.rides.append(ride1)
-        context.insert(ride2); bike.rides.append(ride2)
+        context.insert(ride1); bike.rides = (bike.rides ?? []) + [ride1]
+        context.insert(ride2); bike.rides = (bike.rides ?? []) + [ride2]
 
         let status = try store.waxStatus(for: bike)
 
@@ -190,8 +190,8 @@ struct BikeChainStoreTests {
         let waxDate       = Date(timeIntervalSinceNow: -300)
         let rideBeforeWax = Ride(stravaActivityId: 1, date: Date(timeIntervalSinceNow: -500), distanceKm: 100)
         let rideAfterWax  = Ride(stravaActivityId: 2, date: Date(timeIntervalSinceNow: -100), distanceKm: 55)
-        context.insert(rideBeforeWax); bike.rides.append(rideBeforeWax)
-        context.insert(rideAfterWax);  bike.rides.append(rideAfterWax)
+        context.insert(rideBeforeWax); bike.rides = (bike.rides ?? []) + [rideBeforeWax]
+        context.insert(rideAfterWax);  bike.rides = (bike.rides ?? []) + [rideAfterWax]
         store.addWaxEntry(to: bike, date: waxDate)
 
         let status = try store.waxStatus(for: bike)
@@ -203,7 +203,7 @@ struct BikeChainStoreTests {
         let (store, context, _) = try makeStore()
         let bike = try store.importBike(makeStravaBike())
         let ride = Ride(stravaActivityId: 1, date: Date(), distanceKm: 150)
-        context.insert(ride); bike.rides.append(ride)
+        context.insert(ride); bike.rides = (bike.rides ?? []) + [ride]
 
         let status = try store.waxStatus(for: bike)
 
@@ -214,7 +214,7 @@ struct BikeChainStoreTests {
         let (store, context, _) = try makeStore()
         let bike = try store.importBike(makeStravaBike())
         let ride = Ride(stravaActivityId: 1, date: Date(), distanceKm: 210)
-        context.insert(ride); bike.rides.append(ride)
+        context.insert(ride); bike.rides = (bike.rides ?? []) + [ride]
 
         let status = try store.waxStatus(for: bike)
 
@@ -230,7 +230,7 @@ struct BikeChainStoreTests {
 
         await store.refreshRides(for: bike)
 
-        #expect(bike.rides.count == 2)
+        #expect((bike.rides ?? []).count == 2)
     }
 
     @Test func refreshRidesSkipsDuplicateActivities() async throws {
@@ -238,12 +238,12 @@ struct BikeChainStoreTests {
         let bike = try store.importBike(makeStravaBike())
 
         let existing = Ride(stravaActivityId: 1, date: Date(), distanceKm: 50)
-        context.insert(existing); bike.rides.append(existing)
+        context.insert(existing); bike.rides = (bike.rides ?? []) + [existing]
         mock.ridesToReturn = [makeActivity(id: 1), makeActivity(id: 2)]
 
         await store.refreshRides(for: bike)
 
-        #expect(bike.rides.count == 2)
+        #expect((bike.rides ?? []).count == 2)
     }
 
     @Test func refreshRidesUsesLastWaxDateAsWindowStart() async throws {

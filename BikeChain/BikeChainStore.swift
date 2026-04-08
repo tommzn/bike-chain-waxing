@@ -167,7 +167,7 @@ final class BikeChainStore: ObservableObject {
         let durationKm = try fetchAppSettings()?.waxDurationKm ?? 200.0
         let lastWaxDate = bike.lastWaxEntry?.date
 
-        let riddenKm = bike.rides
+        let riddenKm = (bike.rides ?? [])
             .filter { lastWaxDate == nil || $0.date > lastWaxDate! }
             .reduce(0.0) { $0 + $1.distanceKm }
 
@@ -185,7 +185,7 @@ final class BikeChainStore: ObservableObject {
 
     /// Inserts rides that are not yet stored locally (identified by Strava activity ID).
     private func insertNewRides(_ stravaRides: [StravaActivity], into bike: Bike) throws {
-        let existingIds = Set(bike.rides.map(\.stravaActivityId))
+        let existingIds = Set((bike.rides ?? []).map(\.stravaActivityId))
 
         for activity in stravaRides where !existingIds.contains(activity.id) {
             let ride = Ride(
@@ -194,7 +194,7 @@ final class BikeChainStore: ObservableObject {
                 distanceKm: activity.distanceKm
             )
             modelContext.insert(ride)
-            bike.rides.append(ride)
+            bike.rides = (bike.rides ?? []) + [ride]
         }
     }
 

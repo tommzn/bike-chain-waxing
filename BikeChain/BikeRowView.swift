@@ -18,7 +18,7 @@ struct BikeRowView: View {
 
     private var riddenKm: Double {
         let cutoff = lastWaxDate
-        return bike.rides
+        return (bike.rides ?? [])
             .filter { cutoff == nil || $0.date > cutoff! }
             .reduce(0.0) { $0 + $1.distanceKm }
     }
