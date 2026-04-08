@@ -12,7 +12,6 @@ import SwiftData
 struct BikeChainApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
             AppSettings.self,
             Bike.self,
             Ride.self,

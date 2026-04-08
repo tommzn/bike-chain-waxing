@@ -10,8 +10,8 @@ import SwiftData
 
 @Model
 final class Bike {
-    var stravaId: String
-    var name: String
+    var stravaId: String = ""
+    var name: String = ""
 
     @Relationship(deleteRule: .cascade, inverse: \Ride.bike)
     var rides: [Ride] = []
@@ -28,9 +28,9 @@ final class Bike {
 @Model
 final class Ride {
     /// Strava activity ID — used to prevent duplicate imports on refresh.
-    var stravaActivityId: Int
-    var date: Date
-    var distanceKm: Double
+    var stravaActivityId: Int = 0
+    var date: Date = Date.distantPast
+    var distanceKm: Double = 0.0
     var bike: Bike?
 
     init(stravaActivityId: Int, date: Date, distanceKm: Double) {
@@ -42,7 +42,7 @@ final class Ride {
 
 @Model
 final class WaxEntry {
-    var date: Date
+    var date: Date = Date.distantPast
     var bike: Bike?
 
     init(date: Date) {
